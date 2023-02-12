@@ -26,8 +26,19 @@ const userSchema = new mongoose.Schema(
             max: 1024,
             minlength: 6
         },
+    },
+    {
+        timestamps: true,
     }
 );
 
+// play function before save, encryption
+userSchema.pre("save", async function (next) {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+});
+// the following creates the collection in mongoDB if not existing,
+// else it writes into it.
 const UserModel = mongoose.model("user", userSchema);
 module.exports = UserModel;
