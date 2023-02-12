@@ -38,6 +38,22 @@ userSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
     next();
 });
+
+
+// search the database for an email equal to input AND decrypt passwords
+// in database (or encrypt this one) for matching
+userSchema.statics.login = async function (email, password) {
+    const user = await this.findOne({ email });
+    if (user) {
+        const auth = await bcrypt.compare(password, user.password);
+        if (auth) {
+            return user;
+        }
+        throw Error('incorrect password');
+    }
+    throw Error('incorrect email')
+};
+
 // the following creates the collection in mongoDB if not existing,
 // else it writes into it.
 const UserModel = mongoose.model("user", userSchema);
