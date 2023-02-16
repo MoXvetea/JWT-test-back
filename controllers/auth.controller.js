@@ -4,16 +4,13 @@ const { signUpErrors, signInErrors } = require('../utils/errors.utils');
 
 
 // milliseconds
-const maxAge = 3 * 24 * 60 * 60 * 1000;
-
+let maxAge = 3 * 24 * 60 * 60 * 1000;
 // // Token creation function
 const createToken = (id) => {
     return jwt.sign({ id }, process.env.TOKEN_SECRET, {
         expiresIn: maxAge
     })
 };
-
-
 
 // Account creation
 module.exports.signUp = async (req, res) => {
@@ -35,9 +32,12 @@ module.exports.signUp = async (req, res) => {
         try {
             const user = await UserModel.login(email, password);
             const token = createToken(user._id);
-            res.cookie('jwt', token, { httpOnly: true, maxAge });
+            // res.cookie('jwt', token, { httpOnly: true, maxAge, overwrite:true });
+            res.cookie('jwt', token, { httpOnly: true, maxAge});
             res.status(200).json({ user: user._id })
+            console.log(user._id,'authcontroller signin  ....', token);
         } catch (err) {
+            console.log("errrrrrrrrrrrrrrrorrrrrrrrrrrrrrrrrr");
             const errors = signInErrors(err);
             res.status(200).json({ errors });
         }
@@ -46,8 +46,13 @@ module.exports.signUp = async (req, res) => {
 
 // deconnexion from account, auth token duration validity passed to 1ms
 module.exports.logout = (req, res) => {
+    // const cookie =  req.cookies;
+    console.log('logout');
+    // res.clearCookie('jwt', token, { httpOnly: true, maxAge, overwrite:true });
+    // res.cookie('jwt', '', { domain:'.localhost.',path:'/', httpOnly: true, maxAge: 1, overwrite: true });
+    // res.cookie('jwt', '', { maxAge: 1, overwrite: true });
     res.cookie('jwt', '', { maxAge: 1 });
+    // console.log(req.cookies.jwt);
+    console.log('logout après del normalement....');
     res.redirect('/');
 }
-
-
