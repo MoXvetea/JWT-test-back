@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const userRoutes = require('./routes/user.routes');
 const { checkUser, requireAuth } = require('./middleware/auth.middleware');
-// require('dotenv').config({path: './config/.env'});
 require('dotenv').config();
 require('./config/database');
 const app = express();

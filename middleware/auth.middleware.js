@@ -4,13 +4,11 @@ const UserModel = require("../models/user.model");
 module.exports.checkUser = (req, res, next) => {
     const token = req.signedCookies.jwt;
     // const token = req.cookies.jwt;
-    // console.log('checkUser before if', token);
+    console.log('checkUser before if', token);
     if (token) {
         jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
-            if (err) {
-                
+            if (err) {             
                 res.locals.user = null;
-                // res.cookie("jwt", "", { maxAge: 1 });
                 console.log("checkUser err sur token");
                 next();
             } else {
