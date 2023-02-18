@@ -26,28 +26,31 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
 
 // jwt
-// app.get('/', checkUser);
+// app.get('/');
+app.get('*', checkUser);
 // app.get('/login', checkUser);
-app.get('/login', checkUser);
-app.get('/logout', checkUser);
-app.get('/users', checkUser);
-app.get('/register', checkUser);
+// app.get('/logout', checkUser);
+// app.get('/users', checkUser);
+// app.get('/register', checkUser);
+
+// app.get('/jwtid', requireAuth, (req, res) => {
+//     let token = req.cookies.jwt;
+//     if (token) {
+//         jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
+//             token=decodedToken.id;
+//         })
+//     res.status(200).send(token);
+// });
+
+
 app.get('/jwtid', requireAuth, (req, res) => {
-    let token = req.cookies.jwt;
-    if (token) {
-        jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
-            token=decodedToken.id;
-        })
-    res.status(200).send(token);
-    // res.status(200).send(token)
-    // console.log('jwti.............',token);
-    // console.log(req.cookies.jwt);
+    res.status(200).send(res.locals.user)
+    console.log('xerver...valeur..user...', res.locals.user);
     console.log('jeton trouvé');
-    }
-});
+    });
 
 
 // routes

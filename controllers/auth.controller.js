@@ -32,8 +32,9 @@ module.exports.signUp = async (req, res) => {
         try {
             const user = await UserModel.login(email, password);
             const token = createToken(user._id);
-            // res.cookie('jwt', token, { httpOnly: true, maxAge, overwrite:true });
-            res.cookie('jwt', token, { httpOnly: true, maxAge});
+            // res.cookie('jwt', token, { httpOnly: true, maxAge});
+            res.cookie('jwt', token, { httpOnly: true, signed:true, maxAge});
+            // res.end('cookie set');
             res.status(200).json({ user: user._id })
             console.log(user._id,'authcontroller signin  ....', token);
         } catch (err) {
@@ -47,12 +48,11 @@ module.exports.signUp = async (req, res) => {
 // deconnexion from account, auth token duration validity passed to 1ms
 module.exports.logout = (req, res) => {
     // const cookie =  req.cookies;
-    console.log('logout');
-    // res.clearCookie('jwt', token, { httpOnly: true, maxAge, overwrite:true });
-    // res.cookie('jwt', '', { domain:'.localhost.',path:'/', httpOnly: true, maxAge: 1, overwrite: true });
-    // res.cookie('jwt', '', { maxAge: 1, overwrite: true });
-    res.cookie('jwt', '', { maxAge: 1 });
+    // console.log('logout');
+ 
+    res.clearCookie('jwt'," ",{ httpOnly: true, signed:true, maxAge:1});
+    // res.cookie('cok', 'lklkl', { httpOnly: true, signed:true, maxAge});
     // console.log(req.cookies.jwt);
     console.log('logout après del normalement....');
-    res.redirect('/');
+    res.redirect('/api');
 }

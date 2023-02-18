@@ -7,7 +7,10 @@ module.exports.getAllUsers = async (req, res) => {
     res.status(200).json(users);
 };
 
-
+module.exports.lullaby =  (req, res) => {
+ console.log(`running port ${process.env.APP_PORT}`);
+    res.status(200).send(`ok on port ${process.env.APP_PORT}`);
+};
 
 module.exports.userInfo = (req, res) => {
     if (!ObjectID.isValid(req.params.id))

@@ -9,6 +9,7 @@ router.post("/login", authController.signIn);
 router.get("/logout", authController.logout);
 
 // user DB
+router.get("/", userController.lullaby);
 router.get("/users", userController.getAllUsers);
 router.get("/:id", userController.userInfo);
 
