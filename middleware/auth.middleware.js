@@ -4,7 +4,7 @@ const UserModel = require("../models/user.model");
 module.exports.checkUser = (req, res, next) => {
     const token = req.signedCookies.jwt;
     // const token = req.cookies.jwt;
-    console.log('checkUser before if', token);
+    // console.log('checkUser before if', token);
     if (token) {
         jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
             if (err) {
@@ -17,7 +17,7 @@ module.exports.checkUser = (req, res, next) => {
                 console.log("checkUser ok");
                 let user = await UserModel.findById(decodedToken.id).select("-password");
                 res.locals.user = user.id;
-                console.log(res.locals.user);
+                // console.log(res.locals.user);
                 next();
             }
         });
@@ -30,15 +30,16 @@ module.exports.checkUser = (req, res, next) => {
 
 module.exports.requireAuth = (req, res, next) => {
     const token = req.signedCookies.jwt;
+    console.log('require auth', token);
     // const token = req.cookies.jwt;
     if (token) {
-        console.log(token);
+        // console.log(token);
         jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
             if (err) {
                 console.log(err);
                 res.send(200).json('no token')
             } else {
-                console.log(decodedToken.id);
+                // console.log(decodedToken.id);
                 console.log('token auth middleware');
                 next();
             }

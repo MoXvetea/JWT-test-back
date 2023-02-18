@@ -8,8 +8,8 @@ module.exports.getAllUsers = async (req, res) => {
 };
 
 module.exports.lullaby =  (req, res) => {
- console.log(`running port ${process.env.APP_PORT}`);
-    res.status(200).send(`ok on port ${process.env.APP_PORT}`);
+    console.log(`running port ${process.env.APP_PORT}`);
+    res.status(200).send('ok logout route');
 };
 
 module.exports.userInfo = (req, res) => {

@@ -11,7 +11,7 @@ const app = express();
 
 
 const corsOptions = {
-    origin: true,
+    origin: 'http://localhost:3000',
     credentials: true,
     'Access-Control-Allow-Origin': process.env.CLIENT_URL,
     'allowedHeaders': ['sessionId', 'Content-Type'],
@@ -22,7 +22,7 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 // app.use(cors (process.env.CLIENT_URL));
-// app.use(cors('http://localhost:3000/'));
+// app.use(cors('http://localhost:3000'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -46,9 +46,10 @@ app.get('*', checkUser);
 // });
 
 
+
 app.get('/jwtid', requireAuth, (req, res) => {
     res.status(200).send(res.locals.user)
-    console.log('xerver...valeur..user...', res.locals.user);
+    // console.log('xerver...valeur..user...', res.locals.user);
     console.log('jeton trouvé');
     });
 
