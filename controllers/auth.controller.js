@@ -1,6 +1,6 @@
 const UserModel = require('../models/user.model');
 const jwt = require('jsonwebtoken');
-const { signUpErrors, signInErrors } = require('../utils/errors.utils');
+const { signUpErrors, signInErrors } = require('../utils/errorsHandler');
 
 
 // milliseconds
@@ -13,7 +13,7 @@ const createToken = (id) => {
 };
 
 // Account creation
-module.exports.signUp = async (req, res) => {
+const signUp = async (req, res) => {
     const { pseudo, email, password } = req.body
     try {
         const user = await UserModel.create({ pseudo, email, password });
@@ -25,8 +25,8 @@ module.exports.signUp = async (req, res) => {
     }
 }
 
-// Account connection, auth token generation
-module.exports.signIn = async (req, res) => {
+// Account connection, auth token generation ici access TOKEN
+const signIn = async (req, res) => {
     const { email, password } = req.body
 
     try {
@@ -35,18 +35,21 @@ module.exports.signIn = async (req, res) => {
         res.cookie('jwt', token, { httpOnly: true, sameSite: 'Lax', signed: true, maxAge });
         res.status(200).json({ user: user._id })
     } catch (err) {
-        console.log("signIn.....................errrrrrrrrrrrrrrrorrrrrrrrrrrrrrrrrr...");
         const errors = signInErrors(err);
         res.status(200).json({ errors });
     }
 }
 
 
-// deconnexion from account, auth token duration validity passed to 1ms
-module.exports.logout = (req, res) => {
+// deconnexion from account, auth jwtcookie duration validity passed to 1ms
+const logout = (req, res) => {
 
-    // console.log(req.signedCookies);   
     res.cookie('jwt', '', { httpOnly: true, sameSite: 'Lax', signed: true, maxAge: 1 });
-    console.log('.................................................logout');
     res.redirect('/api');
 };
+
+module.exports = {
+    signUp,
+    signIn,
+    logout,
+}

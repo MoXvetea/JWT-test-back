@@ -1,11 +1,10 @@
 {
-  "name": "strategin-test-back",
+  "name": "jwt-test-back",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "node server.js",
-    "start":"nodemon server.js" 
+    "start":"node server.js" 
   },
   "keywords": [],
   "author": "",
