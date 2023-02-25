@@ -11,7 +11,15 @@ const createToken = (id) => {
         expiresIn: maxAge
     })
 };
+// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+const createAccessToken = (id) => {
+    return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: '5m'
+    })
 
+
+};
+// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 // Account creation
 const signUp = async (req, res) => {
     const { pseudo, email, password } = req.body
@@ -32,13 +40,25 @@ const signIn = async (req, res) => {
     try {
         const user = await UserModel.login(email, password);
         const token = createToken(user._id);
+
+       const accessToken = createAccessToken(user._id)
+    // accessToken = accessToken.json({accessToken: accessToken})
+
         res.cookie('jwt', token, { httpOnly: true, sameSite: 'Lax', signed: true, maxAge });
-        res.status(200).json({ user: user._id })
+        // res.status(200).json({ user: user._id })
+
+     
+        res.send({accessToken})
+// 
+        console.log('authController...signIn...accessToken',accessToken);
+        res.set('Authorization', `Bearer ${accessToken}`).send();
+        // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     } catch (err) {
         const errors = signInErrors(err);
-        res.status(200).json({ errors });
+        // res.status(200).json({ errors });
     }
 }
+
 
 
 // deconnexion from account, auth jwtcookie duration validity passed to 1ms

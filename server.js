@@ -23,7 +23,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
 
-app.get('*', checkUser);
+// app.get('*', checkUser);
+// app.get('/api/users', checkUser);
+
+// app.get('/api/users', checkUser, (req, res) => {
+//     console.log(res.locals.user);
+//     res.status(200).send(res.locals.user)
+    // res.redirect('/api/users')
+    // });
+  
+
+
+app.get('/api/users', checkUser, (req, res) => {
+    res.status(200).send(res.locals.user)
+    });
 
 app.get('/jwtid', requireAuth, (req, res) => {
     res.status(200).send(res.locals.user)
