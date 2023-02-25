@@ -2,8 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const UserModel = require("./models/user.model");
 const userRoutes = require('./routes/user.routes');
 const { checkUser, requireAuth } = require('./middleware/auth.middleware');
+const userController = require("./controllers/user.controller");
 require('./config/database');
 const app = express();
 
@@ -29,18 +31,31 @@ app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
 // app.get('/api/users', checkUser, (req, res) => {
 //     console.log(res.locals.user);
 //     res.status(200).send(res.locals.user)
-    // res.redirect('/api/users')
-    // });
-  
+// res.redirect('/api/users')
+// });
 
 
-app.get('/api/users', checkUser, (req, res) => {
-    res.status(200).send(res.locals.user)
-    });
+// app.get('/users', checkUser, (req, res) => {
+//     // res.status(200).send(res.locals.user)
+//     res.status(200)
+//     });
+
+    app.get('/users', checkUser, userController.getAllUsers);
+
+// app.get('/yui/users', checkUser, async(req, res) => {
+   
+//         console.log('ok get');
+//         const users = await UserModel.find().select("-password");
+
+//         // Send the users as the response
+//         res.status(200).send(users);
+//     }
+
+//     );
 
 app.get('/jwtid', requireAuth, (req, res) => {
     res.status(200).send(res.locals.user)
-    });
+});
 
 
 // routes

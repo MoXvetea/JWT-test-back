@@ -11,7 +11,7 @@ router.get("/logout", authController.logout);
 
 // user DB
 router.get("/", userController.lullaby);
-router.get("/users/user",userController.getAllUsers);
+// router.get("/users",userController.getAllUsers);
 // router.get("/users/user", checkUser, userController.getAllUsers);
 
 module.exports = router;

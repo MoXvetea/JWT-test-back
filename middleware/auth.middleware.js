@@ -18,7 +18,7 @@ const checkUser = (req, res, next) => {
     res.locals.user = decodedToken.id;
     console.log('authmiddleware...checkuser...try ok valleur userId', res.locals.user);
     next();
-    // res.redirect('/api/users')
+    // res.redirect('/users')
 
   } catch (err) {
     console.log('erroe');
