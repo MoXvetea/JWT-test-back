@@ -41,7 +41,6 @@ userSchema.pre("save", async function (next) {
 
 
 // search the database for an email equal to input AND decrypt passwords
-// in database (or encrypt this one) for matching
 userSchema.statics.login = async function (email, password) {
     const user = await this.findOne({ email });
     if (user) {

@@ -23,7 +23,7 @@ const checkUser = (req, res, next) => {
   } catch (err) {
     console.log('authmiddleware...checkuser...erreur, pas de token');
     return res.status(401).json({ message: 'Unrecognized access token' });
-}
+  }
 }
 
 const requireAuth = (req, res, next) => {
@@ -32,27 +32,25 @@ const requireAuth = (req, res, next) => {
     jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
       const user = decodedToken
 
-      console.log('authmiddleware...requireauth...no token');
       if (err) {
         res.cookie('jwt', '', { httpOnly: true, sameSite: 'Lax', signed: true, maxAge: 1 });
-        // res.send(406).json('no token')
         return res.status(406).json({ message: 'Unauthorized' });
       } else {
-            next();
-          }
-        });
-      } else {
-        return res.status(406).json({ message: 'Unauthorized' });
+        next();
       }
-    };
-    
-    module.exports = {
-      checkUser,
-      requireAuth,
-    }
-    
-    
-    
+    });
+  } else {
+    return res.status(406).json({ message: 'Unauthorized' });
+  }
+};
+
+module.exports = {
+  checkUser,
+  requireAuth,
+}
+
+
+
     // router.get('/protected', verifyToken, (req, res) => {
       //     // access token is valid, do something here
       //     res.json({ message: 'You have access to this protected resource' });

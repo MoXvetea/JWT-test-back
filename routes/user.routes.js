@@ -15,8 +15,3 @@ router.get("/", userController.lullaby);
 // router.get("/users/user", checkUser, userController.getAllUsers);
 
 module.exports = router;
-
-    // router.get('/protected', verifyToken, (req, res) => {
-    //     // access token is valid, do something here
-    //     res.json({ message: 'You have access to this protected resource' });
-    //   });
