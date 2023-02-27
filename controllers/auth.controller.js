@@ -4,7 +4,7 @@ const { signUpErrors, signInErrors } = require('../utils/errorsHandler');
 
 
 // let maxAge = 3 * 24 * 60 * 60 * 1000;
-let maxAge = 1 * 1 * 20 * 60 * 1000;
+let maxAge = 1 * 1 * 1 * 60 * 1000;
 //  Tokens creation functions
 const createToken = (id) => {
     return jwt.sign({ id }, process.env.TOKEN_SECRET, {
@@ -43,15 +43,11 @@ const signIn = async (req, res) => {
         const accessToken = createAccessToken(user._id)
 
         res.cookie('jwt', token, { httpOnly: true, sameSite: 'Lax', signed: true, maxAge });
-
-
         res.send({ accessToken })
-
         res.set('Authorization', `Bearer ${accessToken}`).send();
-        // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
     } catch (err) {
         const errors = signInErrors(err);
-        // res.status(200).json({ errors });
     }
 }
 
@@ -69,12 +65,10 @@ const refresh = async (req, res) => {
             return res.status(401).json({ message: 'Unauthorized' });
         }
         const accessToken = createAccessToken(decodedToken._id);
-        console.log('into refresh...accessToken.........', accessToken);
         res.send({ accessToken })
 
     } catch (err) {
         console.error(err);
-        // res.cookie('jwt', '', { httpOnly: true, sameSite: 'Lax', signed: true, maxAge: 1 });
         return res.status(403).json({ message: ' Access forbidden' });
 
     }

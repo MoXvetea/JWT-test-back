@@ -8,7 +8,7 @@ const getAllUsers = async (req, res) => {
 };
 
 const lullaby = (req, res) => {
-    console.log(`running port ${process.env.APP_PORT}`);
+    console.info(`running port ${process.env.APP_PORT}`);
     res.status(200).send(`running port ${process.env.APP_PORT}`);
 };
 
