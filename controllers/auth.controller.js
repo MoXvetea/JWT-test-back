@@ -41,10 +41,10 @@ const signIn = async (req, res) => {
         const token = createToken(user._id);
 
         const accessToken = createAccessToken(user._id)
+        console.log(accessToken);
 
         res.cookie('jwt', token, { httpOnly: true, sameSite: 'Lax', signed: true, maxAge });
         res.send({ accessToken })
-        res.set('Authorization', `Bearer ${accessToken}`).send();
 
     } catch (err) {
         const errors = signInErrors(err);
