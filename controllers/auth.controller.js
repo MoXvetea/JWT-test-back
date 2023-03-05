@@ -4,7 +4,7 @@ const { signUpErrors, signInErrors } = require('../utils/errorsHandler');
 
 
 // let maxAge = 3 * 24 * 60 * 60 * 1000;
-let maxAge = 1 * 1 * 1 * 60 * 1000;
+let maxAge = 1 * 1 * 2 * 60 * 1000;
 //  Tokens creation functions
 const createToken = (id) => {
     return jwt.sign({ id }, process.env.TOKEN_SECRET, {
@@ -41,13 +41,13 @@ const signIn = async (req, res) => {
         const token = createToken(user._id);
 
         const accessToken = createAccessToken(user._id)
-        console.log(accessToken);
 
         res.cookie('jwt', token, { httpOnly: true, sameSite: 'Lax', signed: true, maxAge });
         res.send({ accessToken })
 
     } catch (err) {
         const errors = signInErrors(err);
+        res.status(200).json({ errors });
     }
 }
 
@@ -59,7 +59,7 @@ const refresh = async (req, res) => {
         }
         const refreshToken = cookies.jwt;
         const decodedToken = jwt.verify(refreshToken, process.env.TOKEN_SECRET);
-
+        
         const user = await UserModel.findById(decodedToken.id).select("-password");
         if (!user) {
             return res.status(401).json({ message: 'Unauthorized' });

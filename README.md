@@ -7,7 +7,7 @@
 
 
 ### `lifespan`
-refresh token is set to 1 minutes,
+refresh token is set to 2 minutes,
 
 this setting can be change there:
 
